@@ -4,4 +4,5 @@ export declare class SSEService {
     private readonly qrCodeUtil;
     constructor(qrCodeUtil: QRCodeUtil);
     getQRCodeStream(): Observable<MessageEvent>;
+    private generateQRCodeEvent;
 }

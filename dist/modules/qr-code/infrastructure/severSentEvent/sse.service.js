@@ -14,18 +14,21 @@ const common_1 = require("@nestjs/common");
 const qr_code_util_1 = require("../../../../shared/utils/qr-code.util");
 const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
-const BASE_URL = process.env.Baseurl;
+const BASE_URL = process.env.NODE_ENV === 'production'
+    ? process.env.Baseurl
+    : `${process.env.Baseurldev}${process.env.PORT}`;
 let SSEService = class SSEService {
     constructor(qrCodeUtil) {
         this.qrCodeUtil = qrCodeUtil;
     }
     getQRCodeStream() {
-        return (0, rxjs_1.interval)(10000).pipe((0, operators_1.mergeMap)(async () => {
-            const timestamp = Date.now();
-            const link = `${BASE_URL}:3000/movies?t=${timestamp}`;
-            const qr = await this.qrCodeUtil.generate(link);
-            return { data: qr };
-        }));
+        return (0, rxjs_1.interval)(10000).pipe((0, operators_1.mergeMap)(() => (0, rxjs_1.from)(this.generateQRCodeEvent())));
+    }
+    async generateQRCodeEvent() {
+        const timestamp = Date.now();
+        const link = `${BASE_URL}/movies?t=${timestamp}`;
+        const qr = await this.qrCodeUtil.generate(link);
+        return { data: qr };
     }
 };
 SSEService = __decorate([

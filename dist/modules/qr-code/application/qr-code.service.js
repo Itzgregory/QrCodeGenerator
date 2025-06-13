@@ -20,7 +20,10 @@ let QRCodeService = class QRCodeService {
     }
     async generateQRCode() {
         const timestamp = Date.now();
-        const link = `${BASE_URL}:${app_config_1.APP_CONFIG.port}/movies?t=${timestamp}`;
+        const baseUrl = process.env.NODE_ENV === 'production'
+            ? process.env.Baseurl
+            : `${process.env.Baseurldev}${app_config_1.APP_CONFIG.port}`;
+        const link = `${baseUrl}/movies?t=${timestamp}`;
         return this.qrCodeUtil.generate(link);
     }
 };

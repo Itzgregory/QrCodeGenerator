@@ -10,8 +10,13 @@ export class QRCodeService implements IQRCodeService {
   constructor(private readonly qrCodeUtil: QRCodeUtil) {}
 
   async generateQRCode(): Promise<string> {
-    const timestamp = Date.now();
-    const link = `${BASE_URL}:${APP_CONFIG.port}/movies?t=${timestamp}`;
-    return this.qrCodeUtil.generate(link);
-  }
+  const timestamp = Date.now();
+  const baseUrl = process.env.NODE_ENV === 'production'
+    ? process.env.Baseurl
+    : `${process.env.Baseurldev}${APP_CONFIG.port}`;
+    
+  const link = `${baseUrl}/movies?t=${timestamp}`;
+  return this.qrCodeUtil.generate(link);
+}
+
 }
