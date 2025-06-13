@@ -6,7 +6,7 @@ export function movieLayout(content: string) {
           body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f8fafc;
+            background-color:rgb(172, 240, 189);
             padding: 24px;
             color: #1e293b;
           }
@@ -20,7 +20,7 @@ export function movieLayout(content: string) {
             border: 1px solid #e2e8f0;
           }
           .dashboard-header {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            background: linear-gradient(135deg,rgb(59, 246, 87) 0%,rgb(29, 216, 85) 100%);
             color: white;
             padding: 24px 32px;
             border-bottom: 1px solid #e2e8f0;

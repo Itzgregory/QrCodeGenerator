@@ -12,6 +12,7 @@
     "incremental": true,
     "strict": true,
     "esModuleInterop": true,
+    "types": ["@prisma/client"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

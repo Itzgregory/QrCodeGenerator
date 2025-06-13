@@ -3,18 +3,21 @@ import { IMovieRepository } from 'src/core/interfaces/movie.interface';
 import { Movie } from 'src/core/entities/movie.entity';
 import { HttpClientService } from '../http/http-client.service';
 import { APP_CONFIG } from '../../../../shared/config/app.config';
-import { prisma } from '../../../../shared/config/prisma.config';
+import { PrismaService } from 'src/shared/config/prisma.service';
 
 @Injectable()
 export class MovieDAO implements IMovieRepository {
-  constructor(private readonly httpClient: HttpClientService) {}
+  constructor(
+    private readonly httpClient: HttpClientService,
+    private readonly prisma: PrismaService
+  ) {}
 
  async getRandomMovies(count: number, page: number = 1): Promise<Movie[]> {
   console.log('getRandomMovies called', { count, page });
   const skip = (page - 1) * count;
 
   try {
-    const cachedMovies = await prisma.movie.findMany({
+    const cachedMovies = await this.prisma.movie.findMany({
       skip,
       take: count,
       orderBy: { id: 'desc' },
@@ -38,6 +41,20 @@ export class MovieDAO implements IMovieRepository {
     return movies;
   } catch (err) {
     console.error('Error in getRandomMovies:', err);
+    
+    if (typeof err === 'object' && err !== null && 'code' in err && (err as any).code === 'P2024') {
+      console.error('Database connection pool exhausted. Consider increasing connection limits.');
+      // i will just fallback to API no stress
+      try {
+        const apiMovies = await this.getMoviesFromAPI(skip, count);
+        if (apiMovies.length > 0) {
+          return apiMovies;
+        }
+      } catch (apiErr) {
+        console.error('API fallback also failed:', apiErr);
+      }
+    }
+    
     throw new Error('Failed to fetch movies');
     }
   }
@@ -84,7 +101,7 @@ export class MovieDAO implements IMovieRepository {
         .sort(() => Math.random() - 0.5)
         .slice(skip, skip + count)
         .map(this.mapApiToMovie)
-        .filter(movie => movie.title && movie.poster);
+        .filter(movie => movie.title && movie.poster); 
         
     } catch (err) {
       if (err instanceof Error) {
@@ -104,23 +121,32 @@ export class MovieDAO implements IMovieRepository {
   }
 
   private mapApiToMovie(item: any): Movie {
-  return {
-    title: item.title, 
-    poster: item.poster,
-  };
-}
+    return {
+      // me i will shaa handle them both just incase 
+      title: item.Title || item.title, 
+      poster: item.Poster || item.poster, 
+    };
+  }
 
   private async cacheMovies(movies: Movie[]): Promise<void> {
     try {
+      // I will filter out aything that doesnt have title or poster no stress 
+      const validMovies = movies.filter(m => m.title && m.poster);
+      
+      if (validMovies.length === 0) {
+        console.log('No valid movies to cache');
+        return;
+      }
+
       const { prisma } = await import('../../../../shared/config/prisma.config');
       await prisma.movie.createMany({
-        data: movies.map(m => ({
+        data: validMovies.map(m => ({
           title: m.title,
           poster: m.poster,
         })),
         skipDuplicates: true,
       });
-      console.log(`Successfully cached ${movies.length} movies`);
+      console.log(`Successfully cached ${validMovies.length} movies`);
     } catch (err) {
       if (err instanceof Error) {
         console.error('Failed to cache movies:', err.message);
