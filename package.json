@@ -1,0 +1,30 @@
+{
+  "name": "qr-code-server",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "nest start",
+    "dev": "nest start --watch --tsc",
+    "build": "nest build",
+    "prisma:generate": "prisma generate --schema=./src/prisma/schema.prisma",
+    "prisma:migrate": "prisma migrate dev --schema=./src/prisma/schema.prisma",
+    "prisma:migrate:deploy": "prisma migrate deploy --schema=./src/prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@nestjs/axios": "^0.0.6",
+    "@nestjs/common": "^8.0.0",
+    "@nestjs/core": "^8.0.0",
+    "@nestjs/platform-express": "^8.0.0",
+    "@prisma/client": "^4.0.0",
+    "express": "^5.1.0",
+    "qrcode": "^1.5.0",
+    "rxjs": "^7.5.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^8.0.0",
+    "@types/express": "^5.0.3",
+    "@types/node": "^16.0.0",
+    "@types/qrcode": "^1.5.5",
+    "prisma": "^4.0.0",
+    "typescript": "^4.6.0"
+  }
+}
