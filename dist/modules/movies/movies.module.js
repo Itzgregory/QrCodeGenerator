@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MoviesModule = void 0;
 const common_1 = require("@nestjs/common");
+const axios_1 = require("@nestjs/axios");
 const movie_dao_1 = require("./infrastructure/dao/movie.dao");
 const movies_controller_1 = require("./infrastructure/controllers/movies.controller");
 const http_client_service_1 = require("./infrastructure/http/http-client.service");
@@ -16,6 +17,7 @@ let MoviesModule = class MoviesModule {
 };
 MoviesModule = __decorate([
     (0, common_1.Module)({
+        imports: [axios_1.HttpModule],
         controllers: [movies_controller_1.MoviesController],
         providers: [
             prisma_service_1.PrismaService,

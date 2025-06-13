@@ -18,7 +18,24 @@ let HttpClientService = class HttpClientService {
         this.httpService = httpService;
     }
     async get(url) {
-        return (0, rxjs_1.firstValueFrom)(this.httpService.get(url));
+        try {
+            const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url));
+            return response.data;
+        }
+        catch (error) {
+            console.error('HTTP GET error:', error);
+            throw error;
+        }
+    }
+    async post(url, data) {
+        try {
+            const response = await (0, rxjs_1.firstValueFrom)(this.httpService.post(url, data));
+            return response.data;
+        }
+        catch (error) {
+            console.error('HTTP POST error:', error);
+            throw error;
+        }
     }
 };
 HttpClientService = __decorate([
