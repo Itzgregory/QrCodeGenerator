@@ -4,7 +4,7 @@ export function qrDisplay(qrCode: string) {
          alt="Profile" 
          class="profile-img"/>
     <div class="name">Generated QR codes</div>
-    <div class="description">Scan my Contact Number</div>
+    <div class="description">Scan code to view movie reccomendations</div>
     <img id="qr-code" src="${qrCode}" alt="QR Code" class="qr-code"/>
     
     <div class="scan-options">
