@@ -11,3 +11,4 @@ import { HttpClientService } from './infrastructure/http/http-client.service';
   exports: [MovieDAO], 
 })
 export class MoviesModule {}
+
