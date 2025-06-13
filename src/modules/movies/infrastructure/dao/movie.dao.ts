@@ -17,7 +17,7 @@ export class MovieDAO implements IMovieRepository {
     const skip = (page - 1) * count;
 
     try {
-      // First try to get from cache
+      // First i will try to get from cache
       const cachedMovies = await this.prisma.movie.findMany({
         skip,
         take: count,
@@ -28,7 +28,7 @@ export class MovieDAO implements IMovieRepository {
         return cachedMovies.map(this.mapToMovieEntity);
       }
 
-      // If cache is empty, try API
+      // If cache is empty, then i will try API
       console.log('Fetching from API:', APP_CONFIG.apiUrl);
       const response = await this.httpClient.get(APP_CONFIG.apiUrl);
       
@@ -43,7 +43,7 @@ export class MovieDAO implements IMovieRepository {
         .map(this.mapApiToMovie)
         .filter(movie => movie.title && movie.poster);
 
-      // Cache the results for future requests
+      // then i will now cache the results for future requests
       if (movies.length > 0) {
         await this.cacheMovies(movies).catch(err => 
           console.error('Failed to cache movies:', err)
@@ -54,7 +54,7 @@ export class MovieDAO implements IMovieRepository {
     } catch (err) {
       console.error('Error in getRandomMovies:', err);
       
-      // If we have any cached movies at all, return them
+      // if i have any cached movies at all then i will return them all
       const fallbackMovies = await this.prisma.movie.findMany({
         take: count,
         orderBy: { id: 'desc' },
