@@ -1,0 +1,11 @@
+import { IMovieRepository } from 'src/core/interfaces/movie.interface';
+import { Movie } from 'src/core/entities/movie.entity';
+import { HttpClientService } from '../http/http-client.service';
+export declare class MovieDAO implements IMovieRepository {
+    private readonly httpClient;
+    constructor(httpClient: HttpClientService);
+    getRandomMovies(count: number, page?: number): Promise<Movie[]>;
+    private mapToMovieEntity;
+    private mapApiToMovie;
+    private cacheMovies;
+}
