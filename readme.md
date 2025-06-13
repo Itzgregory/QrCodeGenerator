@@ -17,5 +17,5 @@ A Nest.js and React application generating QR codes linking to 10 random movies,
 
 ## Deployment
 - **Server**: Deploy to Vercel. Set `DATABASE_URL` and `PORT` in env variables.
-- **Repo**: 
+- **Repo**: https://github.com/Itzgregory/QrCodeGenerator
 - **Live URLs**: 
