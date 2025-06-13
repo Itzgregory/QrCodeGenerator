@@ -19,7 +19,7 @@ export class SSEService {
 
   private async generateQRCodeEvent(): Promise<MessageEvent> {
     const timestamp = Date.now();
-    const link = `${BASE_URL}/movies?t=${timestamp}`;
+    const link = `${BASE_URL}movies?t=${timestamp}`;
     const qr = await this.qrCodeUtil.generate(link);
     return { data: qr } as MessageEvent;
   }
