@@ -7,8 +7,6 @@ export declare class MovieDAO implements IMovieRepository {
     private readonly prisma;
     constructor(httpClient: HttpClientService, prisma: PrismaService);
     getRandomMovies(count: number, page?: number): Promise<Movie[]>;
-    private getCachedMovies;
-    private getMoviesFromAPI;
     private mapToMovieEntity;
     private mapApiToMovie;
     private cacheMovies;
